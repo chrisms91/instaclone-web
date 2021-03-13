@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledButton = styled.input`
+const Button = styled.input`
   border: none;
   margin-top: 12px;
   background-color: ${(props) => props.theme.accent};
@@ -10,10 +10,7 @@ const StyledButton = styled.input`
   font-weight: 600;
   width: 100%;
   border-radius: 3px;
+  opacity: ${(props) => (props.disabled ? '0.3' : '1')};
 `;
-
-const Button = (props) => {
-  return <StyledButton {...props} />;
-};
 
 export default Button;

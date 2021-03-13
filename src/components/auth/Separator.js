@@ -22,7 +22,13 @@ const StyledSeparator = styled.div`
 `;
 
 const Separator = () => {
-  return <StyledSeparator />;
+  return (
+    <StyledSeparator>
+      <div></div>
+      <span>Or</span>
+      <div></div>
+    </StyledSeparator>
+  );
 };
 
 export default Separator;
