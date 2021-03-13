@@ -1,9 +1,9 @@
-import { useReactiveVar } from '@apollo/client';
+import { ApolloProvider, useReactiveVar } from '@apollo/client';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './screens/Home';
 import Login from './screens/Login';
 import NotFound from './screens/NotFound';
-import { isLoggedInVar, isDarkModeVar } from './apollo';
+import { isLoggedInVar, isDarkModeVar, client } from './apollo';
 import { ThemeProvider } from 'styled-components';
 import { darkTheme, GlobalStyles, lightTheme } from './styles';
 import SignUp from './screens/SignUp';
@@ -14,28 +14,30 @@ function App() {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   const darkMode = useReactiveVar(isDarkModeVar);
   return (
-    <HelmetProvider>
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-        <GlobalStyles />
-        <div>
-          <Router>
-            <Switch>
-              <Route path={routes.home} exact>
-                {isLoggedIn ? <Home /> : <Login />}
-              </Route>
-              {!isLoggedIn ? (
-                <Route path={routes.signUp}>
-                  <SignUp />
+    <ApolloProvider client={client}>
+      <HelmetProvider>
+        <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+          <GlobalStyles />
+          <div>
+            <Router>
+              <Switch>
+                <Route path={routes.home} exact>
+                  {isLoggedIn ? <Home /> : <Login />}
                 </Route>
-              ) : null}
-              <Route>
-                <NotFound />
-              </Route>
-            </Switch>
-          </Router>
-        </div>
-      </ThemeProvider>
-    </HelmetProvider>
+                {!isLoggedIn ? (
+                  <Route path={routes.signUp}>
+                    <SignUp />
+                  </Route>
+                ) : null}
+                <Route>
+                  <NotFound />
+                </Route>
+              </Switch>
+            </Router>
+          </div>
+        </ThemeProvider>
+      </HelmetProvider>
+    </ApolloProvider>
   );
 }
 

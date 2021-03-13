@@ -1,3 +1,4 @@
+import { gql, useMutation } from '@apollo/client';
 import {
   faFacebookSquare,
   faInstagram,
@@ -23,12 +24,53 @@ const FacebookLogin = styled.div`
   }
 `;
 
+const LOGIN_MUTATION = gql`
+  mutation login($userName: String!, $password: String!) {
+    login(userName: $userName, password: $password) {
+      ok
+      token
+      error
+    }
+  }
+`;
+
 const Login = () => {
-  const { register, handleSubmit, errors, formState } = useForm({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setError,
+    formState,
+    getValues,
+  } = useForm({
     mode: 'onChange',
   });
 
-  const onSubmitValid = (data) => {};
+  const onCompleted = (data) => {
+    const {
+      login: { ok, error, token },
+    } = data;
+
+    if (!ok) {
+      setError('result', {
+        message: error,
+      });
+    }
+  };
+
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted,
+  });
+
+  const onSubmitValid = (data) => {
+    if (loading) {
+      return;
+    }
+    const { userName, password } = getValues();
+    login({
+      variables: { userName, password },
+    });
+  };
 
   return (
     <AuthLayout>
@@ -62,7 +104,12 @@ const Login = () => {
             hasError={Boolean(errors?.password?.message)}
           />
           <FormError message={errors?.password?.message} />
-          <Button type="submit" value="Log In" disabled={!formState.isValid} />
+          <Button
+            type="submit"
+            value={loading ? 'Loading...' : 'Log in'}
+            disabled={!formState.isValid || loading}
+          />
+          <FormError message={errors?.result?.message} />
         </form>
         <Separator />
         <FacebookLogin>
