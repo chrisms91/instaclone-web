@@ -5,7 +5,9 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from 'react-hook-form';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
+import { logUserIn } from '../apollo';
 import AuthLayout from '../components/auth/AuthLayout';
 import BottomBox from '../components/auth/BottomBox';
 import Button from '../components/auth/Button';
@@ -14,6 +16,7 @@ import FormError from '../components/auth/FormError';
 import Input from '../components/auth/Input';
 import Separator from '../components/auth/Separator';
 import PageTitle from '../components/PageTitle';
+import { Notification } from '../components/shared';
 import routes from '../routes';
 
 const FacebookLogin = styled.div`
@@ -35,6 +38,8 @@ const LOGIN_MUTATION = gql`
 `;
 
 const Login = () => {
+  const location = useLocation();
+  console.log(location);
   const {
     register,
     handleSubmit,
@@ -42,8 +47,13 @@ const Login = () => {
     setError,
     formState,
     getValues,
+    clearErrors,
   } = useForm({
     mode: 'onChange',
+    defaultValues: {
+      userName: location?.state?.userName || '',
+      password: location?.state?.password || '',
+    },
   });
 
   const onCompleted = (data) => {
@@ -52,9 +62,13 @@ const Login = () => {
     } = data;
 
     if (!ok) {
-      setError('result', {
+      return setError('result', {
         message: error,
       });
+    }
+    // login success with token
+    if (token) {
+      logUserIn(token);
     }
   };
 
@@ -72,6 +86,10 @@ const Login = () => {
     });
   };
 
+  const clearLoginError = () => {
+    clearErrors('result');
+  };
+
   return (
     <AuthLayout>
       <PageTitle title="Log in" />
@@ -79,6 +97,7 @@ const Login = () => {
         <div>
           <FontAwesomeIcon icon={faInstagram} size="3x" />
         </div>
+        <Notification message={location?.state?.message} />
         <form onSubmit={handleSubmit(onSubmitValid)}>
           <Input
             ref={register({
@@ -92,6 +111,7 @@ const Login = () => {
             type="text"
             placeholder="Username"
             hasError={Boolean(errors?.userName?.message)}
+            onChange={clearLoginError}
           />
           <FormError message={errors?.userName?.message} />
           <Input
@@ -102,6 +122,7 @@ const Login = () => {
             type="password"
             placeholder="Password"
             hasError={Boolean(errors?.password?.message)}
+            onChange={clearLoginError}
           />
           <FormError message={errors?.password?.message} />
           <Button

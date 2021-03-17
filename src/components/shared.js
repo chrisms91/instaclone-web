@@ -10,3 +10,15 @@ export const FatLink = styled.span`
   font-weight: 600;
   color: rgb(142, 142, 142);
 `;
+
+const StyledNotification = styled.div`
+  font-weight: 600;
+  color: #2ecc71;
+  margin-top: 10px;
+`;
+
+export const Notification = ({ message }) => {
+  return message === '' || !message ? null : (
+    <StyledNotification>{message}</StyledNotification>
+  );
+};
