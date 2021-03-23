@@ -5,7 +5,7 @@ import { BaseBox } from '../shared';
 const Container = styled(BaseBox)`
   padding: 20px 0px;
   text-align: center;
-
+  border-radius: 10px;
   a {
     font-weight: 600;
     margin-left: 5px;

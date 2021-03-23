@@ -20,7 +20,7 @@ import { Notification } from '../components/shared';
 import routes from '../routes';
 
 const FacebookLogin = styled.div`
-  color: #385285;
+  color: #0095f6;
   span {
     margin-left: 10px;
     font-weight: 600;
