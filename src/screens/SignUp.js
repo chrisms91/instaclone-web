@@ -73,14 +73,7 @@ const SignUp = () => {
     onCompleted,
   });
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    errors,
-    setError,
-    formState,
-  } = useForm({
+  const { register, handleSubmit, getValues, setError, formState } = useForm({
     mode: 'onChange',
   });
 
