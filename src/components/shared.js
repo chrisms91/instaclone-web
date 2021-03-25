@@ -22,3 +22,7 @@ export const Notification = ({ message }) => {
     <StyledNotification>{message}</StyledNotification>
   );
 };
+
+export const FatText = styled.span`
+  font-weight: 600;
+`;
