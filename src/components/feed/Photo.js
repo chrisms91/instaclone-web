@@ -74,7 +74,34 @@ const Likes = styled(FatText)`
   display: block;
 `;
 
-const Photo = ({ id, user, file, isLiked, totalLikes }) => {
+const Comments = styled.div`
+  margin-top: 20px;
+`;
+
+const Comment = styled.div``;
+
+const CommentCaption = styled.span`
+  margin-left: 10px;
+`;
+
+const CommentCount = styled.span`
+  opacity: 0.7;
+  font-size: 10px;
+  font-weight: 600;
+  margin: 10px 0px;
+  display: block;
+`;
+
+const Photo = ({
+  id,
+  user,
+  file,
+  isLiked,
+  totalLikes,
+  caption,
+  totalComments,
+  comments,
+}) => {
   const updateToggleLike = (cache, result) => {
     const {
       data: {
@@ -115,7 +142,7 @@ const Photo = ({ id, user, file, isLiked, totalLikes }) => {
       }
     }
   };
-  const [toggleLikeMutation, { loading }] = useMutation(TOGGLE_LIKE_MUTATION, {
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE_MUTATION, {
     variables: {
       id,
     },
@@ -150,6 +177,15 @@ const Photo = ({ id, user, file, isLiked, totalLikes }) => {
           </div>
         </PhotoActions>
         <Likes>{totalLikes === 1 ? '1 like' : `${totalLikes} likes`}</Likes>
+        <Comments>
+          <Comment>
+            <FatText>{user.userName}</FatText>
+            <CommentCaption>{caption}</CommentCaption>
+          </Comment>
+          <CommentCount>
+            {totalComments === 1 ? '1 comment' : `${totalComments} comments`}
+          </CommentCount>
+        </Comments>
       </PhotoData>
     </PhotoContainer>
   );
@@ -164,6 +200,9 @@ Photo.propTypes = {
   file: PropTypes.string.isRequired,
   isLiked: PropTypes.bool.isRequired,
   totalLikes: PropTypes.number.isRequired,
+  caption: PropTypes.string,
+  totalComments: PropTypes.number.isRequired,
+  comments: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default Photo;
