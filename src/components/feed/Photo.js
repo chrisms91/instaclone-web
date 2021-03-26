@@ -11,6 +11,7 @@ import { faHeart as SolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { FatText } from '../shared';
 import Avatar from '../Avatar';
 import { gql, useMutation } from '@apollo/client';
+import Comments from './Comments';
 
 const TOGGLE_LIKE_MUTATION = gql`
   mutation toggleLike($id: Int!) {
@@ -71,24 +72,6 @@ const PhotoAction = styled.div`
 
 const Likes = styled(FatText)`
   margin-top: 15px;
-  display: block;
-`;
-
-const Comments = styled.div`
-  margin-top: 20px;
-`;
-
-const Comment = styled.div``;
-
-const CommentCaption = styled.span`
-  margin-left: 10px;
-`;
-
-const CommentCount = styled.span`
-  opacity: 0.7;
-  font-size: 10px;
-  font-weight: 600;
-  margin: 10px 0px;
   display: block;
 `;
 
@@ -177,15 +160,12 @@ const Photo = ({
           </div>
         </PhotoActions>
         <Likes>{totalLikes === 1 ? '1 like' : `${totalLikes} likes`}</Likes>
-        <Comments>
-          <Comment>
-            <FatText>{user.userName}</FatText>
-            <CommentCaption>{caption}</CommentCaption>
-          </Comment>
-          <CommentCount>
-            {totalComments === 1 ? '1 comment' : `${totalComments} comments`}
-          </CommentCount>
-        </Comments>
+        <Comments
+          author={user.userName}
+          caption={caption}
+          comments={comments}
+          totalComments={totalComments}
+        />
       </PhotoData>
     </PhotoContainer>
   );
@@ -202,7 +182,18 @@ Photo.propTypes = {
   totalLikes: PropTypes.number.isRequired,
   caption: PropTypes.string,
   totalComments: PropTypes.number.isRequired,
-  comments: PropTypes.arrayOf(PropTypes.shape({})),
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      user: PropTypes.shape({
+        userName: PropTypes.string.isRequired,
+        avatar: PropTypes.string,
+      }),
+      payload: PropTypes.string.isRequired,
+      isMine: PropTypes.bool.isRequired,
+      createdAt: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default Photo;
