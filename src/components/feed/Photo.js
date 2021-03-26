@@ -93,36 +93,21 @@ const Photo = ({
     } = result;
 
     if (ok) {
-      const fragmentId = `Photo:${id}`;
-      const fragment = gql`
-        fragment UpdateLikeCache on Photo {
-          isLiked
-          totalLikes
-        }
-      `;
-
-      // read data from the cache
-      const photoCache = cache.readFragment({
-        id: fragmentId,
-        fragment,
-      });
-
-      if ('isLiked' in photoCache && 'totalLikes' in photoCache) {
-        const {
-          isLiked: cacheIsLiked,
-          totalLikes: cacheTotalLikes,
-        } = photoCache;
-        cache.writeFragment({
-          id: fragmentId,
-          fragment,
-          data: {
-            isLiked: !cacheIsLiked,
-            totalLikes: cacheIsLiked
-              ? cacheTotalLikes - 1
-              : cacheTotalLikes + 1,
+      const photoId = `Photo:${id}`;
+      cache.modify({
+        id: photoId,
+        fields: {
+          isLiked(cachedVal) {
+            return !cachedVal;
           },
-        });
-      }
+          totalLikes(cachedTotalLikes) {
+            if (isLiked) {
+              return cachedTotalLikes - 1;
+            }
+            return cachedTotalLikes + 1;
+          },
+        },
+      });
     }
   };
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE_MUTATION, {
