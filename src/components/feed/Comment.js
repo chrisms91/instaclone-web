@@ -5,7 +5,6 @@ import { FatText } from '../shared';
 import { Link } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 
 const DELETE_COMMENT_MUTATION = gql`
@@ -78,7 +77,9 @@ const Comment = ({ id, photoId, author, payload, isMine }) => {
 
   return (
     <CommentContainer>
-      <FatText>{author}</FatText>
+      <Link to={`/users/${author}`}>
+        <FatText>{author}</FatText>
+      </Link>
       <CommentCaption>
         {payload.split(' ').map((word, index) =>
           /#[\w]+/.test(word) ? (
