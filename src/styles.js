@@ -9,9 +9,10 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
-  fontColor: 'white',
-  bgColor: '#2c2c2c',
   accent: '#0095f6',
+  bgColor: '#2c2c2c',
+  borderColor: 'rgb(219, 219, 219)',
+  fontColor: 'white',
 };
 
 // Global Styles Here
