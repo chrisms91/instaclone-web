@@ -23,6 +23,9 @@ const Footer = styled.footer`
 
 const DarkModeBtn = styled.span`
   cursor: pointer;
+  svg {
+    color: ${(props) => (props.darkMode ? '#e3b624' : '#3b3a36')};
+  }
 `;
 
 const AuthLayout = ({ children }) => {
@@ -31,7 +34,11 @@ const AuthLayout = ({ children }) => {
     <Container>
       <Wrapper>{children}</Wrapper>
       <Footer>
-        <DarkModeBtn onClick={darkMode ? disableDarkMode : enableDarkMode}>
+        <DarkModeBtn
+          onClick={darkMode ? disableDarkMode : enableDarkMode}
+          darkMode={darkMode}
+        >
+          {darkMode ? 'Light Mode ' : 'Dark Mode '}
           <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
         </DarkModeBtn>
       </Footer>

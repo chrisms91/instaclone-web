@@ -6,13 +6,17 @@ export const lightTheme = {
   bgColor: '#FAFAFA',
   borderColor: 'rgb(219, 219, 219)',
   fontColor: 'rgb(38, 38, 38)',
+  boxColor: '#FAFAFA',
 };
 
 export const darkTheme = {
-  accent: '#0095f6',
-  bgColor: '#2c2c2c',
-  borderColor: 'rgb(219, 219, 219)',
-  fontColor: 'white',
+  // accent: '#0095f6',
+  accent: 'rgb(0, 121, 211)',
+  bgColor: 'rgb(0, 0, 0)',
+  borderColor: 'rgb(52, 53, 54)',
+  //fontColor: 'rgb(129, 131, 132)',
+  fontColor: 'rgb(215, 218, 220)',
+  boxColor: 'rgb(26, 26, 27)',
 };
 
 // Global Styles Here

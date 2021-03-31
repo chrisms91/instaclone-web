@@ -24,7 +24,7 @@ const TOGGLE_LIKE_MUTATION = gql`
 `;
 
 const PhotoContainer = styled.div`
-  background-color: white;
+  background-color: ${(props) => props.theme.boxColor};
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 5px;
   margin-bottom: 20px;
